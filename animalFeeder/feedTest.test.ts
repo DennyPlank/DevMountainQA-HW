@@ -41,6 +41,13 @@ describe("feeding animals", () => {
       expect(marty.feed(food)).toBe(`Marty the Zebra does not like ${food}!`);
     });
   });
-  // test("Melman likes the food we expect", () => {});
+  test("Melman likes the food we expect", () => {
+    giraffeFood.forEach((food)=>{
+      expect(melman.feed(food)).toBe(`Melman the Giraffe likes ${food}!`);
+    });
+    badFood.forEach((food)=>{
+      expect(melman.feed(food)).toBe(`Melman the Giraffe does not like ${food}!`);
+    });
+  });
   // test("Gloria likes the food we expect", () => {});
 });
