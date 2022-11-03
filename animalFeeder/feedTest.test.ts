@@ -25,7 +25,14 @@ const hippoFood = ["grass", "reeds", "shoots"];
 const badFood = ["shrimp", "potatoes", "pizza", "icecream"];
 
 describe("feeding animals", () => {
-  test("Alex likes the food we expect", () => {});
+  test("Alex likes the food we expect", () => {
+    lionFood.forEach((food) =>{
+      expect(alex.feed(food)).toBe(`Alex the Lion likes ${food}!`);
+    });
+    badFood.forEach((food)=>{
+      expect(alex.feed(food)).toBe(`Alex the Lion does not like ${food}!`);
+    });
+  });
   test("Marty likes the food we expect", () => {});
   test("Melman likes the food we expect", () => {});
   test("Gloria likes the food we expect", () => {});
