@@ -39,15 +39,17 @@ describe("Employee Manager 1.2", () => {
 
     describe("handles unsaved, canceled, and saved changes correctly for name, phone#, and title", () => {
         test("An unsaved change doesn't persist if you hit cancel", async () => {
-        /* Test case:
+        
+            /* Test case:
             1. Opens an employee
             2. Edit each of the feilds
             3. Hit cancel
-            4. Check to see if employee data is changed
-        */
+            4. Check to see if employee data is changed */
 
             //  Setup
         await driver.findElement(By.name('employee1')).click();
+        let getName = await driver.findElement(By.name("nameEntry")).getAttribute("value")
+
         await driver.wait(
             until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
         );
@@ -75,7 +77,7 @@ describe("Employee Manager 1.2", () => {
 
         await driver.findElement(By.name('cancel')).click();
         await driver.wait(
-            until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
+            until.elementTextContains(await driver.findElement(By.id("employeeTitle")), getName )
         );
         expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheck)
         expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheck)
@@ -83,6 +85,7 @@ describe("Employee Manager 1.2", () => {
         });
         
         test('An unsaved change doesnt persist if you navigate away from the employee to another', async ()=>{
+
             /* Test case :
             1. Opens an employee
             2. Edit data fields
@@ -92,8 +95,15 @@ describe("Employee Manager 1.2", () => {
             */
 
             await driver.findElement(By.name("employee1")).click();
+            let getName = await driver.findElement(By.name("nameEntry")).getAttribute("value")
             await driver.wait(
                 until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
+            );
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('phoneEntry')))
+            );
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('titleEntry')))
             );
 
                 // Name entry setup
@@ -114,7 +124,7 @@ describe("Employee Manager 1.2", () => {
             await driver.findElement(By.name("employee2")).click();
             await driver.findElement(By.name("employee1")).click();
             await driver.wait(
-                until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
+                until.elementTextContains(await driver.findElement(By.id("employeeTitle")), getName )
             );
             expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheck)
             expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheck)
@@ -122,36 +132,52 @@ describe("Employee Manager 1.2", () => {
             });
         
 
-//         test("A saved change persists", async () => {
-//             /*
-//             This test follows these steps:
-//             1. Open Bernice Ortiz
-//             2. Edit the name input
-//             3. Save the change
-//             4. Open Phillip Weaver
-//             5. Open Bernice Ortiz's old record
-//             5. Verify the name field is the edited name
-//             */
-//             await driver.findElement().click();
-//             await driver.wait(
-//                 until.elementIsVisible(await driver.findElement())
-//             );
-//             await driver.findElement().clear();
-//             await driver.findElement().sendKeys("Test Name");
-//             await driver.findElement().click();
-//             await driver.findElement().click();
-//             await driver.wait(
-//                 until.elementTextContains(
-//                 await driver.findElement(),
-//                 "Phillip"
-//                 )
-//             );
-//             await driver.findElement().click();
-//             expect(
-//                 await (await driver.findElement()).getAttribute("value")
-//             ).toBe("Bernice Ortiz");
-//     });
-// });
+        test("A saved change persists", async () => {
+
+            /* Test Case:
+            1. Open Bernice Ortiz
+            2. Edit the name input
+            3. Save the change
+            4. Open Phillip Weaver
+            5. Open Bernice Ortiz's old record
+            5. Verify the name field is the edited name */
+
+            await driver.findElement(By.name("employee1")).click();
+            let getName = await driver.findElement(By.name("nameEntry")).getAttribute("value")
+
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
+            );
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('phoneEntry')))
+            );
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('titleEntry')))
+            );
+                // Name entry setup
+            await driver.findElement(By.name('nameEntry')).clear();
+            await driver.findElement(By.name('nameEntry')).sendKeys("Test Name Change");
+
+            // Phone entry setup
+            await driver.findElement(By.name('phoneEntry')).clear();
+            await driver.findElement(By.name('phoneEntry')).sendKeys('123456789');
+
+            // Title entry setup
+            await driver.findElement(By.name('titleEntry')).clear();
+            await driver.findElement(By.name('titleEntry')).sendKeys('Test Title Change');
+            
+            // Checks values after save button hit
+            await driver.findElement(By.id('saveBtn')).click();
+            let nameCheckChange = await driver.findElement(By.name("nameEntry")).getAttribute("value")
+            let phoneCheckChange = await driver.findElement(By.name("phoneEntry")).getAttribute("value")
+            let titleCheckChange = await driver.findElement(By.name("titleEntry")).getAttribute("value")
+            
+            await driver.wait( until.elementTextContains( await driver.findElement(By.id("employeeTitle")), getName )
+            );
+            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheckChange)
+            expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheckChange)
+            expect(await driver.findElement(By.name("titleEntry")).getAttribute("value")).toBe(titleCheckChange)
+            });
 
 //     describe("handles error messages correctly", () => {
 //         test("shows an error message for an empty name field", async () => {
