@@ -36,9 +36,9 @@ describe("Employee Manager 1.2", () => {
     });
     
     // Tests start here 
-    
+
     describe("handles unsaved, canceled, and saved changes correctly", () => {
-        test("An unsaved change doesn't persist", async () => {
+        test("An unsaved change doesn't persist if you hit cancel", async () => {
         /* This test is as follows:
             1. Opens Bernice Ortiz
             2. Edit name to be 'Test Name'
@@ -57,50 +57,31 @@ describe("Employee Manager 1.2", () => {
             until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
         );
         expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toContain("Bernice")
+        });
         
-        /* This test is as follows:
+        test('An unsaved change doesnt persist if you navigate away from the employee to another', async ()=>{
+            /* This checks to see if :
             1. Opens Bernice Ortiz
             2. Edit name to be 'Test Name'
             3. Open another employee (Marnie Barnett)
             3. Open Barnice Ortiz again
             4. Check to see if Bernice Ortiz name is still displayed
         */
-        await driver.findElement(By.name("employee1")).click();
-        await driver.wait(
-            until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
-        );
-        await driver.findElement(By.name('nameEntry')).clear();
-        await driver.findElement(By.name('nameEntry')).sendKeys("Test Name");
-        await driver.findElement(By.name("employee2")).click();
-        await driver.sleep(1000)
-        await driver.findElement(By.name("employee1")).click();
-        await driver.wait(
-            until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
-        );
-        expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toContain("Bernice")
-        expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).not.toContain("Marnie")
-        });
+            await driver.findElement(By.name("employee1")).click();
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
+            );
+            await driver.findElement(By.name('nameEntry')).clear();
+            await driver.findElement(By.name('nameEntry')).sendKeys("Test Name");
+            await driver.findElement(By.name("employee2")).click();
+            await driver.findElement(By.name("employee1")).click();
+            await driver.wait(
+                until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
+            );
+            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toContain("Bernice")
+            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).not.toContain("Marnie")
+            });
         
-
-//         test("A canceled change doesn't persist", async () => {
-//             /*
-//             This test follows these steps:
-//             1. Open Phillip Weaver
-//             2. Edit the name input
-//             3. Click cancel
-//             5. Verify the name field is the original name
-//             */
-//             await driver.findElement().click();
-//             await driver.wait(
-//                 until.elementIsVisible(await driver.findElement())
-//             );
-//             await driver.findElement().clear();
-//             await driver.findElement().sendKeys("Test Name");
-//             await driver.findElement().click();
-//             expect(
-//                 await (await driver.findElement()).getAttribute("")
-//             ).toBe("");
-//         });
 
 //         test("A saved change persists", async () => {
 //             /*
