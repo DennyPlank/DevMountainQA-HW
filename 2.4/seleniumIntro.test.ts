@@ -39,11 +39,11 @@ describe("Employee Manager 1.2", () => {
 
     describe("handles unsaved, canceled, and saved changes correctly for name, phone#, and title", () => {
         test("An unsaved change doesn't persist if you hit cancel", async () => {
-        /* This test is as follows:
-            1. Opens Bernice Ortiz
-            2. Edit name to be 'Test Name'
+        /* Test case:
+            1. Opens an employee
+            2. Edit each of the feilds
             3. Hit cancel
-            4. Check to see if Bernice Ortiz is displayed now
+            4. Check to see if employee data is changed
         */
 
             //  Setup
@@ -77,33 +77,48 @@ describe("Employee Manager 1.2", () => {
         await driver.wait(
             until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
         );
-            console.log(`${nameCheck}`)
         expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheck)
         expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheck)
         expect(await driver.findElement(By.name("titleEntry")).getAttribute("value")).toBe(titleCheck)
         });
         
         test('An unsaved change doesnt persist if you navigate away from the employee to another', async ()=>{
-            /* This checks to see if :
-            1. Opens Bernice Ortiz
-            2. Edit name to be 'Test Name'
-            3. Open another employee (Marnie Barnett)
-            3. Open Barnice Ortiz again
-            4. Check to see if Bernice Ortiz name is still displayed
-        */
+            /* Test case :
+            1. Opens an employee
+            2. Edit data fields
+            3. Open another employee without saving
+            3. Open original again
+            4. Check to see if employee data is altered
+            */
+
             await driver.findElement(By.name("employee1")).click();
             await driver.wait(
                 until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
             );
+
+                // Name entry setup
+            let nameCheck = await driver.findElement(By.name("nameEntry")).getAttribute("value")
             await driver.findElement(By.name('nameEntry')).clear();
             await driver.findElement(By.name('nameEntry')).sendKeys("Test Name");
+
+            // Phone entry setup
+            let phoneCheck = await driver.findElement(By.name("phoneEntry")).getAttribute("value")
+            await driver.findElement(By.name('phoneEntry')).clear();
+            await driver.findElement(By.name('phoneEntry')).sendKeys('12345');
+
+            // Title entry setup
+            let titleCheck = await driver.findElement(By.name("titleEntry")).getAttribute("value")
+            await driver.findElement(By.name('titleEntry')).clear();
+            await driver.findElement(By.name('titleEntry')).sendKeys('Test Title');
+
             await driver.findElement(By.name("employee2")).click();
             await driver.findElement(By.name("employee1")).click();
             await driver.wait(
                 until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
             );
-            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toContain("Bernice")
-            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).not.toContain("Marnie")
+            expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheck)
+            expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheck)
+            expect(await driver.findElement(By.name("titleEntry")).getAttribute("value")).toBe(titleCheck)
             });
         
 
