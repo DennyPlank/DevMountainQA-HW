@@ -37,7 +37,7 @@ describe("Employee Manager 1.2", () => {
     
     // Tests start here 
 
-    describe("handles unsaved, canceled, and saved changes correctly", () => {
+    describe("handles unsaved, canceled, and saved changes correctly for name, phone#, and title", () => {
         test("An unsaved change doesn't persist if you hit cancel", async () => {
         /* This test is as follows:
             1. Opens Bernice Ortiz
@@ -46,17 +46,41 @@ describe("Employee Manager 1.2", () => {
             4. Check to see if Bernice Ortiz is displayed now
         */
 
+            //  Setup
         await driver.findElement(By.name('employee1')).click();
         await driver.wait(
             until.elementIsVisible(await driver.findElement(By.name('nameEntry')))
         );
+        await driver.wait(
+            until.elementIsVisible(await driver.findElement(By.name('phoneEntry')))
+        );
+        await driver.wait(
+            until.elementIsVisible(await driver.findElement(By.name('titleEntry')))
+        );
+
+        // Name entry setup
+        let nameCheck = await driver.findElement(By.name("nameEntry")).getAttribute("value")
         await driver.findElement(By.name('nameEntry')).clear();
         await driver.findElement(By.name('nameEntry')).sendKeys("Test Name");
+
+        // Phone entry setup
+        let phoneCheck = await driver.findElement(By.name("phoneEntry")).getAttribute("value")
+        await driver.findElement(By.name('phoneEntry')).clear();
+        await driver.findElement(By.name('phoneEntry')).sendKeys('12345');
+
+        // Title entry setup
+        let titleCheck = await driver.findElement(By.name("titleEntry")).getAttribute("value")
+        await driver.findElement(By.name('titleEntry')).clear();
+        await driver.findElement(By.name('titleEntry')).sendKeys('Test Title');
+
         await driver.findElement(By.name('cancel')).click();
         await driver.wait(
             until.elementTextContains(await driver.findElement(By.id("employeeTitle")), "Bernice" )
         );
-        expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toContain("Bernice")
+            console.log(`${nameCheck}`)
+        expect(await driver.findElement(By.name("nameEntry")).getAttribute("value")).toBe(nameCheck)
+        expect(await driver.findElement(By.name("phoneEntry")).getAttribute("value")).toBe(phoneCheck)
+        expect(await driver.findElement(By.name("titleEntry")).getAttribute("value")).toBe(titleCheck)
         });
         
         test('An unsaved change doesnt persist if you navigate away from the employee to another', async ()=>{
