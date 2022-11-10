@@ -179,52 +179,51 @@ describe("Employee Manager 1.2", () => {
             expect(await driver.findElement(By.name("titleEntry")).getAttribute("value")).toBe(titleCheckChange)
             });
 
-//     describe("handles error messages correctly", () => {
-//         test("shows an error message for an empty name field", async () => {
-//             /*
-//             This test follows these steps:
-//             1. Open Bernice Ortiz
-//             2. Clear the name input
-//             3. Save the change
-//             4. Verify the error is present
-//             */
-//             await driver.findElement().click();
-//             await driver.wait(
-//                 until.elementIsVisible(await driver.findElement())
-//             );
-//             await driver.findElement().clear();
-//             await driver.findElement().sendKeys(Key.SPACE, Key.BACK_SPACE);
-//             await driver.findElement().click();
-//             await driver.wait(until.elementLocated());
-//             expect(await (await driver.findElement()).getText()).toBe(
-//                 "The name field must be between 1 and 30 characters long."
-//             );
-//         });
-//         test("lets you cancel out of an error message", async () => {
-//             /*
-//             This test follows these steps:
-//             1. Open Bernice Ortiz
-//             2. Clear the name input
-//             3. Save the change
-//             4. Verify the error is present
-//             5. Cancel the change
-//             6. Verify the error is gone
-//             */
-//             await driver.findElement().click();
-//             await driver.wait(
-//                 until.elementIsVisible(await driver.findElement())
-//             );
-//             await driver.findElement().clear();
-//             await driver.findElement().sendKeys(Key.SPACE, Key.BACK_SPACE);
-//             await driver.findElement().click();
-//             await driver.wait(until.elementLocated());
-//             expect(await (await driver.findElement()).getText()).toBe(
-//                 "The name field must be between 1 and 30 characters long."
-//             );
-//             await driver.findElement().sendKeys(Key.SPACE);
-//             await driver.findElement().click();
-//             driver.wait(() => true, 500);
-//             expect(await driver.findElements()).toHaveLength(0);
-//         });
+    describe("handles error messages correctly", () => {
+        test("shows an error message for an empty name field", async () => {
+            /*
+            This test follows these steps:
+            1. Open Bernice Ortiz
+            2. Clear the name input
+            3. Save the change
+            4. Verify the error is present
+            */
+            await driver.findElement(bernice).click();
+            await driver.wait(
+                until.elementIsVisible(await driver.findElement(nameInput))
+            );
+            await driver.findElement(nameInput).clear();
+            await driver.findElement(nameInput).sendKeys(Key.SPACE, Key.BACK_SPACE);
+            await driver.findElement(saveButton).click();
+            await driver.wait(until.elementLocated(errorCard));
+            expect(await (await driver.findElement(errorCard)).getText()).toBe("The name field must be between 1 and 30 characters long.");
+            });
+            test("lets you cancel out of an error message", async () => {
+                /*
+                This test follows these steps:
+                1. Open Bernice Ortiz
+                2. Clear the name input
+                3. Save the change
+                4. Verify the error is present
+                5. Cancel the change
+                6. Verify the error is gone
+                */
+                await driver.findElement(bernice).click();
+                await driver.wait(
+                    until.elementIsVisible(await driver.findElement(nameInput))
+                );
+                await driver.findElement(nameInput).clear();
+                await driver.findElement(nameInput).sendKeys(Key.SPACE, Key.BACK_SPACE);
+                await driver.findElement(saveButton).click();
+                await driver.wait(until.elementLocated(errorCard));
+                expect(await (await driver.findElement(errorCard)).getText()).toBe(
+                    "The name field must be between 1 and 30 characters long."
+                );
+                // await driver.findElement(cancelButton).sendKeys(Key.SPACE);
+                await driver.findElement(cancelButton).click();
+                driver.wait(() => true, 500);
+                expect(await driver.findElements(errorCard)).toHaveLength(0);
+            });
+        });
     });
 });

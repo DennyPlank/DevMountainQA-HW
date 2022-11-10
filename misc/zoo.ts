@@ -1,4 +1,4 @@
-import { Animal } from "./animal";
+import { Animal } from "../animalFeeder/animal";
 //This is where we take the class we created in animal and add our array of animals and their food. 
 //Using the same structure that we set in animal we have name as a string type as a string and the preferedFoods which is a string array. 
 let animals: Array<Animal> = [
