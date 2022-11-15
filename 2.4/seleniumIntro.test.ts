@@ -1,3 +1,4 @@
+// This is importing the below methods to be used from the 'selenium' package
 import {
     Builder,
     By,
@@ -8,8 +9,12 @@ import {
     Key,
 } from "selenium-webdriver";
 
+// Where am I using chormdriver? Why do I need to set this variable?
+
 const chromedriver = require("chromedriver");
 
+// This is where we are initializing all the variables that we want to use later. 
+// You don't have to do this, but it will speed up your coding process. 
 const driver: WebDriver = new Builder()
     .withCapabilities(Capabilities.chrome())
     .build();
@@ -24,6 +29,7 @@ const saveButton: By = By.id("saveBtn");
 const cancelButton: By = By.name("cancel");
 const errorCard: By = By.css(".errorCard");
 
+// This is the describe block and the first test suite
 describe("Employee Manager 1.2", () => {
     // Setup and Teardown
     beforeEach(async () => {
