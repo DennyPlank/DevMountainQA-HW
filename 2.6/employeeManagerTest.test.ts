@@ -5,15 +5,20 @@ import {Builder,By, Capabilities, until, WebDriver, } from "selenium-webdriver";
   .withCapabilities(Capabilities.chrome())
   .build();
 
-  class employeePage {
+  class emPage {
       driver: WebDriver;
       url: string = "https://devmountain-qa.github.io/employee-manager/1.2_Version/index.html";
-        //FILL OUT LOCATORS CONSTRUCTOR AND METHODS IN ORDER TO PASS THE TEST
+      
+      //FILL OUT LOCATORS CONSTRUCTOR AND METHODS IN ORDER TO PASS THE TEST
+      const navigate = () => {
+        return await driver.get(this.url)
+      } 
+        constructor()
   }
 
   describe("Employee Manger Test", () => {
       beforeEach(async () => {
-          await employeePage.navigate();
+          await emPage.navigate();
       })
       afterAll(async () => {
           await driver.quit()
